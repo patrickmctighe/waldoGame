@@ -1,39 +1,29 @@
-body{
-  background-color: aqua;
-}
-.gameImg{
-  height:100%;
-  width: 100%;
+body {
+  background-color: rgb(45, 98, 158);
 }
 
-.smallImg{
-  height:3em;
+.smallCharImg {
+  height: 3em;
   width: 3em;
 }
 
-.game-image {
-  position: relative;
-}
-
 .game-img {
-  width: 100%; /* Adjust as needed */
-  height: auto; /* Adjust as needed */
+  width: 100%; 
+  height: 100%; 
 }
 
-.dropdown-menu {
+.dropdown {
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 10px;
-  background: rgba(173, 216, 230, 0.61);
+  border-radius:1em;
+  background: rgba(12, 112, 146, 0.61);
   border: 1px solid #ccc;
-  padding: 10px;
-  display:flex;
-  gap: 1em;
+  padding: .3em;
 }
 
-.circle{
-  border: .5em dotted rgb(52, 233, 7);
+.circle {
+  border: 0.5em dotted rgb(52, 233, 7);
   border-radius: 50%;
   width: 6em;
   height: 6em;
@@ -41,28 +31,56 @@ body{
   line-height: 3em;
   margin: 0 auto;
   position: absolute;
-
 }
 
-.characterSelect:hover{
-background-color: rgba(240, 248, 255, 0.486);
-border-radius: 100px;
-width: 4em;
-height: 4em;
-display: flex;
-align-items: center;
-justify-content: center;
-
+.redCircle{
+  border: 0.5em dotted red;
+  border-radius: 50%;
+  width: 6em;
+  height: 6em;
+  text-align: center;
+  line-height: 3em;
+  margin: 0 auto;
+  position: absolute;
 }
-
-
-.characterSelect{
-  
-  border-radius: 100px;
+.characterSelect:hover {
+  background-color: rgba(240, 248, 255, 0.486);
+  border-radius: 2em;
   width: 4em;
   height: 4em;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.characterSelectContainer {
   
-  }
+height: 4em;
+width:14em;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1em;
+}
+
+.header{
+  position: sticky;
+  top:0;
+  width:100%;
+  background-color: rgba(40, 61, 158, 0.774);
+  display:flex;
+  justify-content: space-around;
+}
+.charactersHeaderContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.charactersInHeader{
+  display: flex;
+  gap:1.5em;
+  padding-bottom: .25em;
+  align-items: center;
+  justify-content: center;
+}

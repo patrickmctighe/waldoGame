@@ -1,77 +1,239 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { set } from "lodash";
+import React, { useState, useEffect, useRef } from "react";
 
 const PhotoTagging = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [clickPosition, setClickPosition] = useState(null);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [greenCircle, setGreenCircle] = useState(false);
+  const [redCircle, setRedCircle] = useState(false);
+  const [score, setScore] = useState(0);
+  const [initialScreenWidth, setInitialScreenWidth] = useState(window.innerWidth);
+  const [initialScreenHeight, setInitialScreenHeight] = useState(window.innerHeight);
 
-  const characters = [
-    <img className='smallImg' src="/images/Falcon.png" alt="" />,
-    <img className='smallImg' src="/images/superman.png" alt="" />,
-    <img className='smallImg' src="/images/yoda.png" alt="" />,
-  ];
+
+
+
+
+  useEffect(() => {
+    setInitialScreenWidth(window.innerWidth);
+    setInitialScreenHeight(window.innerHeight);
+
+
+    // Fetch characters when the component mounts
+  
+    fetch("http://localhost:3000/api/characters")
+      .then((response) => response.json())
+      .then((data) => {
+        setCharacters(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("An error occurred while fetching characters:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setInitialScreenWidth(window.innerWidth);
+      setInitialScreenHeight(window.innerHeight);
+    }
+  
+    // Attach the event listener when the component mounts
+    window.addEventListener("resize", handleResize);
+  
+    // Detach the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
 
   const componentRef = useRef(null);
   const listRef = useRef(null);
 
-  const handleGameImageClick = (event) => {
+  const handleGameImageClick = async (event) => {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-
-    if (clickPosition && x === clickPosition.x && y === clickPosition.y) {
-      // If the user clicks the same spot twice, don't change the state
-      return;
-    }
-
+  
+    // Normalize the coordinates
+    const xPercentage = (x / initialScreenWidth) * 100;
+    const yPercentage = (y / initialScreenHeight) * 100;
+  
     setClickPosition({ x, y });
-    setShowDropdown(true);
+  
+    // Check if the click matches any character's location
+    const matchingCharacter = characters.find((character) => {
+      // Define a radius in percentage based on the initial screen size
+      const radius = 15; //<- makes an radius for the matching click in pixels
+      const isWithinRadius =
+        Math.abs(character.x - xPercentage) <= radius &&
+        Math.abs(character.y - yPercentage) <= radius;
+      return isWithinRadius;
+    });
+  
+    if (matchingCharacter) {
+      setRedCircle(false);
+      setSelectedCharacter(matchingCharacter);
+      setShowDropdown(true);
+      setGreenCircle(true);
+  
+      // Make a POST request to the backend API to validate the click
+      const response = await fetch("http://localhost:3000/api/validate-click", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          characterId: matchingCharacter.id,
+          clickPosition: { x: xPercentage, y: yPercentage },
+        }),
+      });
+  
+      const data = await response.json();
+      console.log(data);
+    } else {
+      // If no character is found at the click location, hide the dropdown
+      setShowDropdown(false);
+      setRedCircle(true);
+    }
   };
+  
 
   const handleListMouseLeave = () => {
     setShowDropdown(false);
   };
 
   useEffect(() => {
-    // Event listener to close the dropdown when clicking outside
     function handleClickOutside(event) {
-      if (componentRef.current && !componentRef.current.contains(event.target)) {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
         setShowDropdown(false);
       }
     }
 
-    // Add the event listener
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      // Remove the event listener when the component unmounts
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const dropdownStyle = {
-    position: 'absolute',
-    top: clickPosition ? `${clickPosition.y + 65}px` : 0,
-    left: clickPosition ? `${clickPosition.x - 120}px` : 0,
+    position: "absolute",
+    top: clickPosition ? `${clickPosition.y + 145}px` : 0,
+    left: clickPosition ? `${clickPosition.x - 110}px` : 0,
   };
+
+  const sendClickLocation = async (x, y, characterName) => {
+    const data = { x, y ,characterName};
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/saveClickLocation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Click location saved:", responseData.location);
+      } else {
+        console.error("Failed to save click location.");
+      }
+    } catch (error) {
+      console.error("An error occurred while sending the request:", error);
+    }
+  };
+
+  const handleCharacterSelect = (character) => {
+    console.log("selected character", character);
+  
+    // Check if the character has not been selected before
+    if (selectedCharacter) {
+      // Increment the score
+      setScore((prevscore) => prevscore + 1);
+    }
+    // Check for the winning condition
+    if (score + 1 === characters.length) {
+      console.log("Congratulations! You won!");
+    }
+    if (score === null) {
+      console.log("no change");
+    }
+    console.log(character.name);
+    console.log(score);
+    // Always set the selected character
+    setSelectedCharacter(character);
+  };
+
+
 
   return (
     <div className="photo-tagging-container" ref={componentRef}>
       <div className="game-image" onClick={handleGameImageClick}>
-        <img src="./public/images/gameImage.jpg" alt="Game Image" className="game-img" />
+        <img
+          src="/images/gameImage.jpg"
+          alt="Game Image"
+          className="game-img"
+        />
         {showDropdown && (
           <div>
-            {clickPosition && (
-              <div className="circle" style={{ top: clickPosition.y - 50, left: clickPosition.x - 50 }}></div>
+            {greenCircle && (
+              <div
+                className="circle"
+                style={{
+                  top: clickPosition.y + 30,
+                  left: clickPosition.x - 50,
+                }}
+              ></div>
             )}
-            <div className="dropdown-menu" style={dropdownStyle} ref={listRef} onMouseLeave={handleListMouseLeave}>
-              {characters.map((character, index) => (
-                <div className="characterSelect" key={index} onClick={() => setSelectedCharacter(character)}>
-                  {character} 
+            <div
+              className="dropdown"
+              style={dropdownStyle}
+              ref={listRef}
+              onMouseLeave={handleListMouseLeave}
+            >
+              {loading ? (
+                <p>Loading characters...</p>
+              ) : (
+                <div className="characterSelectContainer">
+                  {characters.map((character) => (
+                    <div
+                      key={character.name}
+                      className="characterSelect"
+                      onClick={() => handleCharacterSelect(character)}
+                    >
+                      <img
+                        className="smallCharImg"
+                        src={character.image}
+                        alt={character.name}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
           </div>
+        )}
+        {redCircle && (
+          <div
+            className="redCircle"
+            style={{
+              top: clickPosition.y + 30,
+              left: clickPosition.x - 50,
+            }}
+          ></div>
         )}
       </div>
     </div>
