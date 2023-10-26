@@ -1,7 +1,8 @@
 import { set } from "lodash";
+import PropTypes from "prop-types";
 import React, { useState, useEffect, useRef } from "react";
 
-const PhotoTagging = () => {
+const PhotoTagging = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [clickPosition, setClickPosition] = useState(null);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -12,11 +13,11 @@ const PhotoTagging = () => {
   const [score, setScore] = useState(0);
   const [initialScreenWidth, setInitialScreenWidth] = useState(window.innerWidth);
   const [initialScreenHeight, setInitialScreenHeight] = useState(window.innerHeight);
+  const [alreadySelectedCharacters, setAlreadySelectedCharacters] = useState([]);
 
-
-
-
-
+  const componentRef = useRef(null);
+  const listRef = useRef(null);
+  
   useEffect(() => {
     setInitialScreenWidth(window.innerWidth);
     setInitialScreenHeight(window.innerHeight);
@@ -52,8 +53,23 @@ const PhotoTagging = () => {
   }, []);
   
 
-  const componentRef = useRef(null);
-  const listRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setShowDropdown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
 
   const handleGameImageClick = async (event) => {
     const rect = event.target.getBoundingClientRect();
@@ -81,26 +97,13 @@ const PhotoTagging = () => {
       setSelectedCharacter(matchingCharacter);
       setShowDropdown(true);
       setGreenCircle(true);
-  
-      // Make a POST request to the backend API to validate the click
-      const response = await fetch("http://localhost:3000/api/validate-click", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          characterId: matchingCharacter.id,
-          clickPosition: { x: xPercentage, y: yPercentage },
-        }),
-      });
-  
-      const data = await response.json();
-      console.log(data);
     } else {
       // If no character is found at the click location, hide the dropdown
       setShowDropdown(false);
       setRedCircle(true);
     }
+  
+    await sendClickLocation(xPercentage, yPercentage, matchingCharacter ? matchingCharacter.name : null);
   };
   
 
@@ -108,22 +111,6 @@ const PhotoTagging = () => {
     setShowDropdown(false);
   };
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        componentRef.current &&
-        !componentRef.current.contains(event.target)
-      ) {
-        setShowDropdown(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const dropdownStyle = {
     position: "absolute",
@@ -158,15 +145,23 @@ const PhotoTagging = () => {
 
   const handleCharacterSelect = (character) => {
     console.log("selected character", character);
-  
+    if (alreadySelectedCharacters.includes(character)) {
+      // Do nothing if the same character is selected
+      return;
+    }
     // Check if the character has not been selected before
-    if (selectedCharacter) {
+    else {
       // Increment the score
       setScore((prevscore) => prevscore + 1);
+      setAlreadySelectedCharacters((prevSelectedCharacters) => [
+        ...prevSelectedCharacters,
+        character,
+      ]);
     }
     // Check for the winning condition
     if (score + 1 === characters.length) {
       console.log("Congratulations! You won!");
+      props.setGameEnded(true); // Update the gameEnded state using the setGameEnded prop
     }
     if (score === null) {
       console.log("no change");
@@ -176,8 +171,6 @@ const PhotoTagging = () => {
     // Always set the selected character
     setSelectedCharacter(character);
   };
-
-
 
   return (
     <div className="photo-tagging-container" ref={componentRef}>
@@ -238,6 +231,14 @@ const PhotoTagging = () => {
       </div>
     </div>
   );
+
+
+};
+
+PhotoTagging.propTypes = {
+  onGameEnd: PropTypes.func.isRequired,
+  setGameEnded: PropTypes.func.isRequired,
+  gameEnded: PropTypes.bool.isRequired,
 };
 
 export default PhotoTagging;

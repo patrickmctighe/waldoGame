@@ -37,11 +37,18 @@ const characterSchema = new mongoose.Schema({
   y: Number,
 });
 
+//leaderboard schema
+const leaderboardSchema = new mongoose.Schema({
+  name: String,
+  score: Number,
+});
+
+
 
 // Create a model based on the schema
 const ClickLocation = mongoose.model('ClickLocation', clickLocationSchema);
 const CharacterModel = mongoose.model('Character', characterSchema);
-
+const LeaderboardModel = mongoose.model('Leaderboards', leaderboardSchema);
 // Middleware to parse JSON data
 app.use(express.json());
 app.use(cors());
@@ -91,6 +98,29 @@ app.get('/api/characters', async (req, res) => {
 });
 
 
+//post the name and score to leaderobard
+app.post('/api/leaderboards', async (req, res) => {
+  const { name, score } = req.body;
+  const leaderboard = new LeaderboardModel({ name, score });
+
+  try {
+    const savedLeaderboard = await leaderboard.save();
+    res.json({ message: 'Leaderboard saved successfully', leaderboard: savedLeaderboard });
+  } catch (err) {
+    res.status(500).json({ error: 'An error occurred while saving the leaderboard' });
+  }
+});
+
+app.get('/api/leaderboards', async (req, res) => {
+  try {
+    const leaderboard = await LeaderboardModel.find({});
+    res.json(leaderboard);
+  } catch (err) {
+    res.status(500).json({ error: 'An error occurred while retrieving leaderboard' });
+  }
+}
+);
+
 // Set the server port (use process.env.PORT or 3000 by default)
 const port = process.env.PORT || 3000;
 
@@ -98,3 +128,5 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
