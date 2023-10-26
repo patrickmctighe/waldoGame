@@ -40,6 +40,7 @@ className="nameInput"
 type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
         />
       </label>
       <br />
@@ -49,7 +50,7 @@ type="text"
       </label></div>
      
       <br />
-      <button type="submit">Submit</button>
+      <button className="submitButton" type="submit">Submit</button>
     </form>
     </div>
   );

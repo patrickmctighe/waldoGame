@@ -5,7 +5,7 @@ function Home({onGameStart}) {
         <div className='home'>
             <h1>Welcome to my Science Fiction Image Puzzle!</h1>
             <h2>Press the Start Button when your Ready</h2>
-            <button onClick={onGameStart}>Start Game</button>
+            <button className='startButton'  onClick={onGameStart}>Start Game</button>
         </div>
     );
 }

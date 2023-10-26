@@ -1,9 +1,37 @@
 body {
   background-color: rgb(45, 98, 158);
   font-family: 'Orbitron', sans-serif;
+  margin:0
 }
 /*retrybtn */
 .retryButton{
+  background-color: rgb(45, 98, 158);
+  color: white;
+  border-radius: 1em;
+  border: 1px solid white;
+  padding: .5em;
+  margin: .5em;
+  font-size: .75em;
+  font-family: 'Orbitron', sans-serif;
+  height: 10%;
+  width:30%;
+  margin-bottom: 2%;
+}
+
+.submitButton{
+  background-color: rgb(45, 98, 158);
+  color: white;
+  border-radius: 1em;
+  border: 1px solid white;
+  padding: .5em;
+  margin: .5em;
+  font-size: .75em;
+  font-family: 'Orbitron', sans-serif;
+  height: 10%;
+  width:30%;
+}
+
+.startButton{
   background-color: rgb(45, 98, 158);
   color: white;
   border-radius: 1em;
@@ -105,6 +133,7 @@ width:14em;
   gap:1.5em;
   align-items: center;
   justify-content: center;
+  padding-top: 3%;
 }
 .charactersInHeader{
   display: flex;
