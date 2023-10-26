@@ -1,12 +1,15 @@
 body {
-  background-color: rgb(45, 98, 158);
+  background-color: rgb(12, 25, 45);
   font-family: 'Orbitron', sans-serif;
-  margin:0
+  margin: 0;
+  color: white; /* Change text color to white for better contrast */
 }
-/*retrybtn */
-.retryButton{
+
+/* Add a subtle glow effect to buttons */
+.retryButton,
+.submitButton,
+.startButton {
   background-color: rgb(45, 98, 158);
-  color: white;
   border-radius: 1em;
   border: 1px solid white;
   padding: .5em;
@@ -14,64 +17,52 @@ body {
   font-size: .75em;
   font-family: 'Orbitron', sans-serif;
   height: 10%;
-  width:30%;
+  width: 30%;
   margin-bottom: 2%;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-.submitButton{
-  background-color: rgb(45, 98, 158);
-  color: white;
-  border-radius: 1em;
-  border: 1px solid white;
-  padding: .5em;
-  margin: .5em;
-  font-size: .75em;
-  font-family: 'Orbitron', sans-serif;
-  height: 10%;
-  width:30%;
+/* Add a glowing effect on hover */
+.retryButton:hover,
+.submitButton:hover,
+.startButton:hover {
+  background-color: rgb(70, 150, 220);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
 }
 
-.startButton{
-  background-color: rgb(45, 98, 158);
-  color: white;
-  border-radius: 1em;
-  border: 1px solid white;
-  padding: .5em;
-  margin: .5em;
-  font-size: .75em;
-  font-family: 'Orbitron', sans-serif;
-  height: 10%;
-  width:30%;
-}
-.retryBtnCont{
+.retryBtnCont {
   display: flex;
   align-items: center;
   justify-content: center;
   padding-top: 1.5%;
 }
-.buttonAndImgs{
-  width:50%;
+
+.buttonAndImgs {
+  width: 50%;
   height: 100%;
 }
-.timerPart{
-  width:20%
+
+.timerPart {
+  width: 20%;
 }
-/*character imgs*/
+
+/* character imgs */
 .smallCharImg {
   height: 3em;
   width: 3em;
 }
 
 .game-img {
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
 }
 
 .dropdown {
   position: absolute;
   top: 0;
   left: 0;
-  border-radius:1em;
+  border-radius: 1em;
   background: rgba(12, 112, 146, 0.61);
   border: 1px solid #ccc;
   padding: .3em;
@@ -88,7 +79,7 @@ body {
   position: absolute;
 }
 
-.redCircle{
+.redCircle {
   border: 0.5em dotted red;
   border-radius: 50%;
   width: 6em;
@@ -98,6 +89,7 @@ body {
   margin: 0 auto;
   position: absolute;
 }
+
 .characterSelect:hover {
   background-color: rgba(240, 248, 255, 0.486);
   border-radius: 2em;
@@ -106,126 +98,144 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
 }
 
 .characterSelectContainer {
-  
-height: 4em;
-width:14em;
+  height: 4em;
+  width: 14em;
   display: flex;
   align-items: center;
   justify-content: space-around;
   gap: 1em;
 }
-.logo{
+
+.logo {
   font-size: 55px;
+  color: rgb(0, 102, 204);
+  text-shadow: 0 0 10px rgba(0, 102, 204, 0.8);
+  animation: colorChange 10s linear infinite;
 }
-.header{
+
+.header {
   position: sticky;
-  top:0;
-  width:100%;
-  background-color: rgb(40, 62, 158);
-  display:flex;
-  justify-content: space-around;
-}
-.charactersHeaderContainer{
+  top: 0;
+  width: 100%;
+  background-color: rgb(102, 153, 204);
   display: flex;
-  gap:1.5em;
+  justify-content: space-around;
+  animation: colorChange 10s linear infinite;
+}
+
+@keyframes colorChange {
+  0% {
+    color: rgb(0, 102, 204);
+  }
+  50% {
+    color: rgb(0, 51, 102);
+  }
+  100% {
+    color: rgb(0, 102, 204);
+  }
+}
+.charactersHeaderContainer {
+  display: flex;
+  gap: 1.5em;
   align-items: center;
   justify-content: center;
   padding-top: 3%;
 }
-.charactersInHeader{
+
+.charactersInHeader {
   display: flex;
-  gap:1.5em;
+  gap: 1.5em;
   padding-bottom: .25em;
   align-items: center;
   justify-content: center;
 }
-/*leaderboard*/
-.scoreBoard{
+
+/* leaderboard */
+.scoreBoard {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
   border-radius: 1em;
   padding: .5em;
   margin: .5em;
 }
 
-.playerScore{
+.playerScore {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 20%;
   padding: 1em;
-  border: 2px solid black
+  border: 2px solid black;
 }
 
-.scoreListing{
+.scoreListing {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
 }
 
-.listingTitle{
+.listingTitle {
   text-decoration: underline .2em solid black;
   margin-bottom: 0px;
 }
 
-.leaderboardTitle{
+.leaderboardTitle {
   text-decoration: underline .1em solid black;
 }
 
-/*Home*/
-.home{
+/* Home */
+.home {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 5%
+  padding-top: 5%;
 }
 
-
-/*leader board form*/
-.leaderboardForm{
-  display:flex;
+/* leader board form */
+.leaderboardForm {
+  display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 
-.leaderboardForm2{
-  display:flex;
+.leaderboardForm2 {
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap:.25em;
+  gap: .25em;
   flex-direction: column;
   padding-top: 5%;
 }
 
-.homeHeader{
+.homeHeader {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column; 
+  flex-direction: column;
   padding-top: 15%;
 }
-.scoreInput{
+
+.scoreInput {
   background-color: transparent;
   border: none;
- width: 1.5em;
- color: black;
- font-size: 1.25em;
- align-self: center;
+  width: 1.5em;
+  color: black;
+  font-size: 1.25em;
+  align-self: center;
 }
 
-.nameInput{
+.nameInput {
   background-color: rgb(102, 102, 180);
 }
-.labelAndScore{
-display: none;
+
+.labelAndScore {
+  display: none;
 }
