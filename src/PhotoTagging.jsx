@@ -114,7 +114,7 @@ const PhotoTagging = (props) => {
 
   const dropdownStyle = {
     position: "absolute",
-    top: clickPosition ? `${clickPosition.y + 145}px` : 0,
+    top: clickPosition ? `${clickPosition.y + 215}px` : 0,
     left: clickPosition ? `${clickPosition.x - 110}px` : 0,
   };
 
@@ -186,7 +186,7 @@ const PhotoTagging = (props) => {
               <div
                 className="circle"
                 style={{
-                  top: clickPosition.y + 30,
+                  top: clickPosition.y + 97,
                   left: clickPosition.x - 50,
                 }}
               ></div>
@@ -223,7 +223,7 @@ const PhotoTagging = (props) => {
           <div
             className="redCircle"
             style={{
-              top: clickPosition.y + 30,
+              top: clickPosition.y + 97,
               left: clickPosition.x - 50,
             }}
           ></div>

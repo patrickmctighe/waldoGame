@@ -1,10 +1,11 @@
 import React from 'react';
 
-function Home() {
+function Home({onGameStart}) {
     return (
-        <div>
-            <h1>Welcome to Waldo Game</h1>
-            
+        <div className='home'>
+            <h1>Welcome to my Science Fiction Image Puzzle!</h1>
+            <h2>Press the Start Button when your Ready</h2>
+            <button onClick={onGameStart}>Start Game</button>
         </div>
     );
 }

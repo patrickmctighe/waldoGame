@@ -1,7 +1,7 @@
 //LeaderboardForm.jsx
 import React, { useState } from "react";
 
-const LeaderboardForm = ({ score, setShowLeaderboard }) => {
+const LeaderboardForm = ({ score, setShowLeaderboard , setShowLeaderboardForm}) => {
   const [name, setName] = useState("");
 
   const handleSubmit = (event) => {
@@ -17,6 +17,7 @@ const LeaderboardForm = ({ score, setShowLeaderboard }) => {
       .then((data) => {
         console.log("Success:", data);
         setShowLeaderboard(true);
+        setShowLeaderboardForm(false);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -24,23 +25,33 @@ const LeaderboardForm = ({ score, setShowLeaderboard }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div >
+      <div className="homeHeader"><h1>Leaderboard Form</h1>
+    <h3>Great Job! You found all the hidden characters!</h3>
+    <h3>Enter your name to be added to the leaderboard!</h3>
+    <h1>
+      {score} Seconds
+    </h1></div>
+    <form className="leaderboardForm2" onSubmit={handleSubmit}>
       <label>
-        Name:
+        Name <br />
         <input
-          type="text"
+className="nameInput"
+type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </label>
       <br />
-      <label>
-        Score:
-        <input type="text" value={score} disabled />
-      </label>
+      <div className="labelAndScore"> <label>
+         <br /> Score  <br />
+        <input className="scoreInput" type="text" value={score} disabled />
+      </label></div>
+     
       <br />
       <button type="submit">Submit</button>
     </form>
+    </div>
   );
 };
 

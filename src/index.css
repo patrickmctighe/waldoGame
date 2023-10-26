@@ -1,7 +1,34 @@
 body {
   background-color: rgb(45, 98, 158);
+  font-family: 'Orbitron', sans-serif;
 }
-
+/*retrybtn */
+.retryButton{
+  background-color: rgb(45, 98, 158);
+  color: white;
+  border-radius: 1em;
+  border: 1px solid white;
+  padding: .5em;
+  margin: .5em;
+  font-size: .75em;
+  font-family: 'Orbitron', sans-serif;
+  height: 10%;
+  width:30%;
+}
+.retryBtnCont{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1.5%;
+}
+.buttonAndImgs{
+  width:50%;
+  height: 100%;
+}
+.timerPart{
+  width:20%
+}
+/*character imgs*/
 .smallCharImg {
   height: 3em;
   width: 3em;
@@ -62,18 +89,20 @@ width:14em;
   justify-content: space-around;
   gap: 1em;
 }
-
+.logo{
+  font-size: 55px;
+}
 .header{
   position: sticky;
   top:0;
   width:100%;
-  background-color: rgba(40, 61, 158, 0.774);
+  background-color: rgb(40, 62, 158);
   display:flex;
   justify-content: space-around;
 }
 .charactersHeaderContainer{
   display: flex;
-  flex-direction: column;
+  gap:1.5em;
   align-items: center;
   justify-content: center;
 }
@@ -83,4 +112,91 @@ width:14em;
   padding-bottom: .25em;
   align-items: center;
   justify-content: center;
+}
+/*leaderboard*/
+.scoreBoard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  border-radius: 1em;
+  padding: .5em;
+  margin: .5em;
+}
+
+.playerScore{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 20%;
+  padding: 1em;
+  border: 2px solid black
+}
+
+.scoreListing{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.listingTitle{
+  text-decoration: underline .2em solid black;
+  margin-bottom: 0px;
+}
+
+.leaderboardTitle{
+  text-decoration: underline .1em solid black;
+}
+
+/*Home*/
+.home{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5%
+}
+
+
+/*leader board form*/
+.leaderboardForm{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.leaderboardForm2{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  gap:.25em;
+  flex-direction: column;
+  padding-top: 5%;
+}
+
+.homeHeader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; 
+  padding-top: 15%;
+}
+.scoreInput{
+  background-color: transparent;
+  border: none;
+ width: 1.5em;
+ color: black;
+ font-size: 1.25em;
+ align-self: center;
+}
+
+.nameInput{
+  background-color: rgb(102, 102, 180);
+}
+.labelAndScore{
+display: none;
 }

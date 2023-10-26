@@ -10,14 +10,27 @@ function Leaderboard() {
             .catch(error => console.error("Error fetching leaderboard data:", error));
     }, []);
 
-    const sortedLeaderboardData = leaderboardData.sort((a, b) => b.score - a.score);
+    const sortedLeaderboardData = leaderboardData.sort((a, b) => a.score - b.score);
 
     return (
         <div className="scoreBoard">
+            <h1 className='leaderboardTitle'>Leaderboard</h1>
             {sortedLeaderboardData.map((data, index) => (
-                <div key={index}>
-                    <p>Player Name: {data.name}</p>
-                    <p>Player Score: {data.score}</p>
+                <div className="playerScore"key={index}>
+                    <div className="scoreListing">
+                  <p className='listingTitle'>_Place_</p>
+                  <p>{index+1}</p>
+                   </div>
+                   <div className="scoreListing">
+                  <p  className='listingTitle'>_Name_</p>
+                  <p>{data.name}</p>
+                   </div>
+                   <div className="scoreListing">
+                  <p  className='listingTitle'> _Score_</p>
+                  <p>{data.score}secs</p>
+                   </div>
+                    
+                    
                 </div>
             ))}
         </div>

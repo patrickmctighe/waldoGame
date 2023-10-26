@@ -1,5 +1,5 @@
-//App.jsx
 import React, { useState, useEffect } from "react";
+
 import PhotoTagging from "./PhotoTagging";
 import Home from "./Home";
 import LeaderboardForm from "./LeaderboardForm";
@@ -11,10 +11,7 @@ function App() {
   const [characters, setCharacters] = useState([]);
   const [gameEnded, setGameEnded] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-
-  const startGame = () => {
-    setGameStarted(true);
-  };
+  const [showLeaderboardForm, setShowLeaderboardForm] = useState(true);
 
   const restartGame = () => {
     setGameStarted(false);
@@ -66,6 +63,7 @@ function App() {
       .then((data) => {
         console.log("Success:", data);
         setShowLeaderboard(true);
+        setShowLeaderboardForm(false);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -77,10 +75,10 @@ function App() {
   return (
     <div className="container">
       <div className="header">
-        <h1>findEM</h1>
-        <h2 className="timer">Timer: {elapsedTime}</h2>
-        <div className="charactersHeaderContainer">
-          {" "}
+        <h1 className="logo">SciFinder</h1>
+        <div className="buttonAndImgs"><div className="charactersHeaderContainer">
+        <h2 className="timerPart">Timer: {elapsedTime}</h2>
+
           <h2 className="charactersHeaderTitle">Characters:</h2>{" "}
           <div className="charactersInHeader">
             {characters.map((character) => (
@@ -93,27 +91,43 @@ function App() {
                     alt={character.name}
                   />
                 </div>
+                
               </div>
             ))}
           </div>
+          
         </div>
-
-        {gameStarted ? <button onClick={restartGame}>Retry</button> : null}
+<div className="retryBtnCont"> {gameStarted && !gameEnded ? (
+          <button className="retryButton" onClick={restartGame}>Retry</button>
+        ) : null}</div></div>
+        
+       
       </div>
-      <div className="home">
-        {gameStarted ? null : <button onClick={startGame}>Start Game</button>}
+      <div className="container">
         {gameEnded ? (
-          <LeaderboardForm onSubmit={handleLeaderboardSubmit} score={elapsedTime} setShowLeaderboard={setShowLeaderboard} />
+          <>
+            {showLeaderboardForm ? (
+              <div className="leaderboardForm">    <LeaderboardForm
+              onSubmit={handleLeaderboardSubmit}
+              score={elapsedTime}
+              setShowLeaderboard={setShowLeaderboard}
+              setShowLeaderboardForm={setShowLeaderboardForm}
+            /></div>
+          
+            ) : null}
+            {showLeaderboard ? (
+              <Leaderboard showForm={showLeaderboardForm} />
+            ) : null}
+          </>
         ) : gameStarted ? (
           <PhotoTagging
             onGameEnd={handleGameEnd}
             setGameEnded={setGameEnded}
             gameEnded={gameEnded}
           />
-        ) : (
-          <Home onGameStart={startGame} />
+        ) : (<div className="home">          <Home onGameStart={setGameStarted} />
+</div>
         )}
-        {showLeaderboard ? <Leaderboard /> : null} {/* Conditionally render the leaderboard */}
       </div>
     </div>
   );
