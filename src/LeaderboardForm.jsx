@@ -3,10 +3,10 @@ import React, { useState } from "react";
 
 const LeaderboardForm = ({ score, setShowLeaderboard , setShowLeaderboardForm}) => {
   const [name, setName] = useState("");
-
+  const apiSite= "https://waldoapi-np2m.onrender.com"
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("http://localhost:3000/api/leaderboards", {
+    fetch(apiSite +"/api/leaderboards", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

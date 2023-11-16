@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 function Leaderboard() {
     const [leaderboardData, setLeaderboardData] = useState([]);
-
+    const apiSite= "https://waldoapi-np2m.onrender.com"
     useEffect(() => {
-        fetch("http://localhost:3000/api/leaderboards")
+        fetch(apiSite + "/api/leaderboards")
             .then(response => response.json())
             .then(data => setLeaderboardData(data))
             .catch(error => console.error("Error fetching leaderboard data:", error));

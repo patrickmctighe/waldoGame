@@ -12,6 +12,8 @@ function App() {
   const [gameEnded, setGameEnded] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showLeaderboardForm, setShowLeaderboardForm] = useState(true);
+const apiSite= "https://waldoapi-np2m.onrender.com"
+
 
   const restartGame = () => {
     setGameStarted(false);
@@ -32,7 +34,7 @@ function App() {
   }, [gameStarted, gameEnded]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/characters")
+    fetch( apiSite + "/api/characters")
       .then((response) => response.json())
       .then((data) => {
         setCharacters(data);
@@ -47,7 +49,7 @@ function App() {
   };
 
   const handleLeaderboardSubmit = (name, score) => {
-    fetch("http://localhost:3000/api/leaderboard", {
+    fetch(apiSite + "/api/leaderboard", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

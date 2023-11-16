@@ -6,7 +6,5 @@ console.log('Vite config loaded');
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  proxy: {
-    '/api': 'http://localhost:3000'
-  },
+
 })

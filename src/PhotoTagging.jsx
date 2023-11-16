@@ -14,7 +14,7 @@ const PhotoTagging = (props) => {
   const [initialScreenWidth, setInitialScreenWidth] = useState(window.innerWidth);
   const [initialScreenHeight, setInitialScreenHeight] = useState(window.innerHeight);
   const [alreadySelectedCharacters, setAlreadySelectedCharacters] = useState([]);
-
+  const apiSite= "https://waldoapi-np2m.onrender.com"
   const componentRef = useRef(null);
   const listRef = useRef(null);
   
@@ -25,7 +25,7 @@ const PhotoTagging = (props) => {
 
     // Fetch characters when the component mounts
   
-    fetch("http://localhost:3000/api/characters")
+    fetch(apiSite + "/api/characters")
       .then((response) => response.json())
       .then((data) => {
         setCharacters(data);
@@ -122,7 +122,7 @@ const PhotoTagging = (props) => {
     const data = { x, y ,characterName};
     try {
       const response = await fetch(
-        "http://localhost:3000/api/saveClickLocation",
+        apiSite+"/api/saveClickLocation",
         {
           method: "POST",
           headers: {
